@@ -33,6 +33,12 @@ public class UserController {
         return raumService.alleRaume();
     }
 
+   /* @GetMapping("api/room/{number}")
+     public List<Raum> alle(){
+      return raumService.();
+    }*/
+
+
     @GetMapping("api/import")
     public ResponseEntity apiImport(){
         try {

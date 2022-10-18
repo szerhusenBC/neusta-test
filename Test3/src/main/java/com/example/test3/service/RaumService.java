@@ -168,7 +168,7 @@ public class RaumService {
 
     // [ggf. Titel] Vorname [ggf. Zweitname(n)] [ggf. Namenszusatz] Nachname (LDAP-Username)
     private Person buildPerson(String userInfo) throws Exception {
-        List<String> infoSplit = Arrays.stream(userInfo.split(" ")).toList();
+        List<String> infoSplit = new ArrayList<>(Arrays.asList(userInfo.split(" ")));
 
         String ldapUser = infoSplit.get(infoSplit.size() - 1).replace("(", "").replace(")", "");
         infoSplit.remove(infoSplit.size() - 1);

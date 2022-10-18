@@ -50,7 +50,7 @@ public class UserController {
     }
 
     @RequestMapping(path = "api/import2",method = RequestMethod.POST,consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-    public  ResponseEntity<Object> apiImport(@RequestParam String name,@RequestPart MultipartFile document) throws IOException {
+    public  ResponseEntity<Object> apiImport(@RequestPart MultipartFile document) throws IOException {
       //  System.out.println(name);
         String content = new String(document.getBytes());
         System.out.println(document.getName());

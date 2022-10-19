@@ -167,6 +167,8 @@ public class RaumService {
 
 
     // [ggf. Titel] Vorname [ggf. Zweitname(n)] [ggf. Namenszusatz] Nachname (LDAP-Username)
+
+
     private Person buildPerson(String userInfo) throws Exception {
         List<String> infoSplit = new ArrayList<>(Arrays.asList(userInfo.split(" ")));
 
@@ -191,7 +193,9 @@ public class RaumService {
         String firstName = "";
 
         for (String name : infoSplit) {
-            firstName = firstName + name;
+            firstName = firstName + " " + name;
+            firstName = firstName.trim();
+
         }
         if (!tempPersonData.add(firstName + "" + lastName)) {
             // Bewohner dürfen nur einmalig in der Importdatei vorkommen, sonst Fehlercode 3 (HTTP 400)

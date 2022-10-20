@@ -2,68 +2,49 @@ package com.example.test3.controller;
 
 import com.example.test3.domain.Raum;
 import com.example.test3.service.RaumService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 
 @RestController
-@RequestMapping("users")
 public class UserController {
-
-    @Autowired
     private RaumService raumService;
 
-    @GetMapping("/")
-    public ResponseEntity getUsers(){
-        try {
-           return ResponseEntity.ok("Server Leuft");
-        } catch (Exception e)   {
-            return ResponseEntity.badRequest().body("Fehlercode 2 HTTP ");
-        }
+    public UserController(RaumService raumService) {
+        this.raumService = raumService;
+    }
+
+    @PostMapping(path = "api/import", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    public void importDocument(@RequestPart MultipartFile document) throws IOException {
+        String content = new String(document.getBytes());
+        raumService.saveRaum(content);
+
     }
 
     @GetMapping("api/room")
-    public List<Raum> alle(){
-        return raumService.alleRaume();
+    public List<Raum> getRooms() {
+        return raumService.getRooms();
     }
 
-   /* @GetMapping("api/room/{number}")
-     public List<Raum> alle(){
-      return raumService.();
-    }*/
+    @GetMapping("api/room/{number}")
+    public Raum getRoom(@PathVariable String number) {
+        List<Raum> rooms = raumService.getRooms();
+        for (Raum room : rooms) {
+            if (Objects.equals(room.getRoom(), number)){
+                return room;
 
-
-    @GetMapping("api/import")
-    public ResponseEntity apiImport(){
-        try {
-
-            return ResponseEntity.ok("Server");
-        } catch (Exception e)   {
-            return ResponseEntity.badRequest().body("Fehlercode 2 HTTP 400");
+                //if (number.length() != 4) {
+                  //  return ResponseEntity.badRequest().body("Fehlercode 4 HTTP 400");
+                //}
+            }
         }
-    }
-
-    @RequestMapping(path = "api/import2",method = RequestMethod.POST,consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-    public  ResponseEntity<Object> apiImport(@RequestPart MultipartFile document) throws IOException {
-      //  System.out.println(name);
-        String content = new String(document.getBytes());
-        System.out.println(document.getName());
-        return raumService.saveRaum(content);
-
-       /* try {
-            raumService.saveRaum2(content);
-            return ResponseEntity.ok().contentType(MediaType.TEXT_PLAIN).body(content);
-        }catch(Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-        }*/
-
-        //return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Fehlercode 4 HTTP 400");
-        //return ResponseEntity.ok().contentType(MediaType.TEXT_PLAIN).body(content);
+        return null;
     }
 }
+
+
+

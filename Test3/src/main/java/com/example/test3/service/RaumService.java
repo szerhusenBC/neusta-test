@@ -15,6 +15,7 @@ public class RaumService {
     private Set<String> tempPersonData = new HashSet<>();
 
     public ResponseEntity<Object> saveRaum(String content) {
+        tempPersonData.clear();
 
         String[] raumInfos = content.split("\n");
         List<Raum> tempRaumList = new ArrayList<>();
@@ -114,6 +115,13 @@ public class RaumService {
             return raeume;
         }
         return Collections.emptyList();
+    }
+
+    public String fehlerCode(int httpCode, String message) {
+        return "{\n" +
+                "   code:   "+httpCode+",\n"+
+                "   message:"+message +"\n"+
+                "}";
     }
 }
 

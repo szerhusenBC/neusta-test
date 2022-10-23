@@ -27,12 +27,12 @@ public class RaumService {
 
             String raumNr = raumSplit[0];
             if (raumNr.length() != 4) {
-                return ResponseEntity.badRequest().body("Fehlercode 4 HTTP 400");
+                return ResponseEntity.badRequest().contentType(MediaType.APPLICATION_JSON).body(fehlerCode(400,"invalid number format"));
 
             }
             if (!tempRaumNummer.add(raumNr)) {
                 // Räume dürfen nur einmalig in der Importdatei vorkommen, sonst Fehlercode 2 (HTTP 400)
-                return ResponseEntity.badRequest().body("Fehlercode 2 HTTP 400");
+                return ResponseEntity.badRequest().contentType(MediaType.APPLICATION_JSON).body(fehlerCode(400,"room already exists"));
             }
             try {
                 tempRaumList.add(new Raum(raumNr, extractPersonen(raumSplit)));
@@ -95,7 +95,7 @@ public class RaumService {
         }
         if (!tempPersonData.add(firstName + "" + lastName)) {
             // Bewohner dürfen nur einmalig in der Importdatei vorkommen, sonst Fehlercode 3 (HTTP 400)
-            throw new Exception("Fehlercode 3 HTTP 400");
+            throw new Exception (fehlerCode(400,"person already exists"));
         }
 
         return new Person(firstName, lastName, titel, nameAddition, ldapUser);

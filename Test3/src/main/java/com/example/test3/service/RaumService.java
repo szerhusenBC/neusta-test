@@ -27,12 +27,12 @@ public class RaumService {
 
             String raumNr = raumSplit[0];
             if (raumNr.length() != 4) {
-                return ResponseEntity.badRequest().contentType(MediaType.APPLICATION_JSON).body(fehlerCode(400,"invalid number format"));
+                return ResponseEntity.badRequest().contentType(MediaType.APPLICATION_JSON).body(new ErrorDto(400, "invalid number format"));
 
             }
             if (!tempRaumNummer.add(raumNr)) {
                 // Räume dürfen nur einmalig in der Importdatei vorkommen, sonst Fehlercode 2 (HTTP 400)
-                return ResponseEntity.badRequest().contentType(MediaType.APPLICATION_JSON).body(fehlerCode(400,"room already exists"));
+                return ResponseEntity.badRequest().contentType(MediaType.APPLICATION_JSON).body(new ErrorDto(400, "room already exists"));
             }
             try {
                 tempRaumList.add(new Raum(raumNr, extractPersonen(raumSplit)));
@@ -47,7 +47,6 @@ public class RaumService {
     }
 
 
-
     private List<Person> extractPersonen(String[] raumInfos) throws Exception {
         List<Person> personList = new ArrayList<>();
         for (int i = 1; i < raumInfos.length; i++) {
@@ -58,8 +57,6 @@ public class RaumService {
 
         return personList;
     }
-
-
 
 
     // [ggf. Titel] Vorname [ggf. Zweitname(n)] [ggf. Namenszusatz] Nachname (LDAP-Username)
@@ -95,7 +92,8 @@ public class RaumService {
         }
         if (!tempPersonData.add(firstName + "" + lastName)) {
             // Bewohner dürfen nur einmalig in der Importdatei vorkommen, sonst Fehlercode 3 (HTTP 400)
-            throw new Exception (fehlerCode(400,"person already exists"));
+      throw new Exception(String.valueOf (new ErrorDto(400,"person already exist")));
+
         }
 
         return new Person(firstName, lastName, titel, nameAddition, ldapUser);
@@ -117,13 +115,13 @@ public class RaumService {
         return Collections.emptyList();
     }
 
-    public String fehlerCode(int httpCode, String message) {
+   /* public String fehlerCode(int httpCode, String message) {
         return "{\n" +
-                "   code:   "+httpCode+",\n"+
-                "   message:"+message +"\n"+
-                "}";
+                "   code:   " + httpCode + ",\n" +
+                "   message:" + message + "\n" +
+                "}";*/
     }
-}
+
 
 
 

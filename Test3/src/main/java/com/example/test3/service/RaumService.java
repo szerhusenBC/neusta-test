@@ -36,8 +36,8 @@ public class RaumService {
             }
             try {
                 tempRaumList.add(new Raum(raumNr, extractPersonen(raumSplit)));
-            } catch (Exception e) {
-                return ResponseEntity.badRequest().body(e.getMessage());
+            } catch (PersonAlreadyExistsException e) {
+                return ResponseEntity.badRequest().body(e.getErrorDto());
             }
 
         }
@@ -47,7 +47,7 @@ public class RaumService {
     }
 
 
-    private List<Person> extractPersonen(String[] raumInfos) throws Exception {
+    private List<Person> extractPersonen(String[] raumInfos) {
         List<Person> personList = new ArrayList<>();
         for (int i = 1; i < raumInfos.length; i++) {
 
@@ -62,7 +62,7 @@ public class RaumService {
     // [ggf. Titel] Vorname [ggf. Zweitname(n)] [ggf. Namenszusatz] Nachname (LDAP-Username)
 
 
-    private Person buildPerson(String userInfo) throws Exception {
+    private Person buildPerson(String userInfo) {
         List<String> infoSplit = new ArrayList<>(Arrays.asList(userInfo.split(" ")));
 
         String ldapUser = infoSplit.get(infoSplit.size() - 1).replace("(", "").replace(")", "");
@@ -92,8 +92,7 @@ public class RaumService {
         }
         if (!tempPersonData.add(firstName + "" + lastName)) {
             // Bewohner dürfen nur einmalig in der Importdatei vorkommen, sonst Fehlercode 3 (HTTP 400)
-      throw new Exception(String.valueOf (new ErrorDto(400,"person already exist")));
-
+            throw new PersonAlreadyExistsException(new ErrorDto(400, "person already exist"));
         }
 
         return new Person(firstName, lastName, titel, nameAddition, ldapUser);
@@ -120,7 +119,7 @@ public class RaumService {
                 "   code:   " + httpCode + ",\n" +
                 "   message:" + message + "\n" +
                 "}";*/
-    }
+}
 
 
 

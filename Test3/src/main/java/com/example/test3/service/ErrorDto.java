@@ -27,10 +27,5 @@ public class ErrorDto {
         return message;
     }
 
-    @Override
-    public String toString() {
 
-        return  (code + ": " + message) ;
-
-    }
 }

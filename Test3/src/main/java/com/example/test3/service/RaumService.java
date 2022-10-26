@@ -63,48 +63,17 @@ public class RaumService {
 
 
     private Person buildPerson(String userInfo) {
-        List<String> infoSplit = new ArrayList<>(Arrays.asList(userInfo.split(" ")));
+        Person person = new PersonParser().parse(userInfo);
 
-        String ldapUser = infoSplit.get(infoSplit.size() - 1).replace("(", "").replace(")", "");
-        infoSplit.remove(infoSplit.size() - 1);
-
-        String lastName = infoSplit.get(infoSplit.size() - 1);
-        infoSplit.remove(infoSplit.size() - 1);
-
-        String titel;
-        if (infoSplit.get(0).contains(".")) {
-            titel = "Dr.";
-            infoSplit.remove(0);
-        } else {
-            titel = "";
-        }
-
-        String nameAddition = constructNameAddition(infoSplit.get(infoSplit.size() - 1));
-        if (!nameAddition.equals("")) {
-            infoSplit.remove(infoSplit.size() - 1);
-        }
-        String firstName = "";
-
-        for (String name : infoSplit) {
-            firstName = firstName + " " + name;
-            firstName = firstName.trim();
-
-        }
-        if (!tempPersonData.add(firstName + "" + lastName)) {
+        if (!tempPersonData.add(person.getFirstName() + "" + person.getLastName())) {
             // Bewohner dürfen nur einmalig in der Importdatei vorkommen, sonst Fehlercode 3 (HTTP 400)
             throw new PersonAlreadyExistsException(new ErrorDto(400, "person already exist"));
         }
 
-        return new Person(firstName, lastName, titel, nameAddition, ldapUser);
+        return person;
     }
 
-    private String constructNameAddition(String s) {
-        if (s.equals("von") || s.equals("de") || s.equals("van")) {
-            return s;
 
-        }
-        return "";
-    }
 
 
     public List<Raum> getRooms() {

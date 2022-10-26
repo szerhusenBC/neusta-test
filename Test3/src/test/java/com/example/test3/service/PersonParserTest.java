@@ -4,6 +4,7 @@ import com.example.test3.domain.Person;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.*;
 
 class PersonParserTest {
@@ -42,4 +43,19 @@ class PersonParserTest {
         assertThat(person.getNameAddition()).isEqualTo("");
         assertThat(person.getTitle()).isEqualTo("");
     }
+
+    @Test
+    void personHatNurNachname() {
+        assertThatThrownBy(() -> parser.parse("Supper"))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("Person ist nicht vollständig");
+    }
+
+    // "Frank Supper ()"
+    // "Frank (fsupper)"
+    // "Dr. Dr. Frank Supper (fsupper)"
+    // "Prof. Frank Supper (fsupper)"
+    // "F. Supper (fsupper)"
+
+
 }

@@ -9,7 +9,13 @@ import java.util.List;
 public class PersonParser {
 
     public Person parse(String userInfo){
-        List<String> infoSplit = new ArrayList<>(Arrays.asList(userInfo.split(" ")));
+        String[] splittetUserInfo = userInfo.split(" ");
+
+        if (splittetUserInfo.length == 1) {
+            throw new IllegalArgumentException("Person ist nicht vollständig");
+        }
+
+        List<String> infoSplit = new ArrayList<>(Arrays.asList(splittetUserInfo));
 
         String ldapUser = infoSplit.get(infoSplit.size() - 1).replace("(", "").replace(")", "");
         infoSplit.remove(infoSplit.size() - 1);

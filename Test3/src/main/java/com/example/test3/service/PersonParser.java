@@ -1,7 +1,6 @@
 package com.example.test3.service;
 
 import com.example.test3.domain.Person;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -11,7 +10,7 @@ public class PersonParser {
     public Person parse(String userInfo){
         String[] splittetUserInfo = userInfo.split(" ");
 
-        if (splittetUserInfo.length == 1) {
+        if (splittetUserInfo.length <3) {
             throw new IllegalArgumentException("Person ist nicht vollständig");
         }
 

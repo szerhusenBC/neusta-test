@@ -50,6 +50,47 @@ class PersonParserTest {
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("Person ist nicht vollständig");
     }
+    @Test
+    void personHatNurVorname(){
+        assertThatThrownBy(()-> parser.parse( "Frank"))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("Person ist nicht vollständig");
+}
+    @Test
+    void personHatNurVornameUndNachname(){
+        assertThatThrownBy(()-> parser.parse( "Frank Supper"))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("Person ist nicht vollständig");
+
+    }
+    @Test
+    void personHatZweiTitle(){
+        assertThatThrownBy(()-> parser.parse( "Prof.Dr."))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("Person ist nicht vollständig");
+    }
+    @Test
+    void personHatFalscheTitle(){
+        assertThatThrownBy(()-> parser.parse("Professor"))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("Person ist nicht vollständig");
+        
+    }
+    @Test
+    void personHatKeinLdpUser(){
+        assertThatThrownBy(()-> parser.parse("Dr.Frank Supper" ))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("Person ist nicht vollständig");
+
+    }
+    @Test
+    void personHatFalscheTitleNachnameLdpUser(){
+        assertThatThrownBy(()-> parser.parse("F.Supper(fsupper)"))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("Person ist nicht vollständig");
+
+    }
+
 
     // "Frank Supper ()"
     // "Frank (fsupper)"

@@ -23,17 +23,12 @@ public class UserController {
     }
 
     @PostMapping(path = "api/import", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-
-
-
     public ResponseEntity<Object> importDocument(@RequestPart MultipartFile document) throws IOException {
-        if (document == null) {
+        if (document == null || document.isEmpty()) {
             // Fehlt im POST-Request das Daten-Feld
             return ResponseEntity.badRequest().contentType(MediaType.APPLICATION_JSON).body(new ErrorDto(400, "no csv file given"));
         }
         // TODO: prüfe ob Daten-Feld valide
-
-
         String content = new String(document.getBytes());
         return raumService.saveRaum(content);
     }
@@ -47,7 +42,7 @@ public class UserController {
 
     @GetMapping("api/room/{number}")
     public ResponseEntity<Object> getRoom(@PathVariable String number) {
-        if (number.length() != 4) {
+       /* if (number.length() != 4) {
             return ResponseEntity.badRequest().contentType(MediaType.APPLICATION_JSON).body(new ErrorDto(400, "invalid number format"));
         }
         List<Raum> rooms = raumService.getRooms();
@@ -59,7 +54,8 @@ public class UserController {
                 return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(room);
             }
         }
-        return ResponseEntity.badRequest().contentType(MediaType.APPLICATION_JSON).body(new ErrorDto(400, "room number not found"));
+        return ResponseEntity.badRequest().contentType(MediaType.APPLICATION_JSON).body(new ErrorDto(400, "room number not found"));*/
+        return raumService.getRoom(number);
     }
 
 

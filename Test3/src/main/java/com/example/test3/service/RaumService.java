@@ -5,7 +5,6 @@ import com.example.test3.domain.Raum;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
 import java.util.*;
 
 @Service
@@ -81,6 +80,22 @@ public class RaumService {
             return raeume;
         }
         return Collections.emptyList();
+    }
+
+    public ResponseEntity getRoom(String number) {
+        if (number.length() != 4) {
+            return ResponseEntity.badRequest().contentType(MediaType.APPLICATION_JSON).body(new ErrorDto(400, "invalid number format"));
+        }
+        List<Raum> rooms = getRooms();
+        if (rooms.isEmpty()) {
+            return ResponseEntity.badRequest().contentType(MediaType.APPLICATION_JSON).body(new ErrorDto(400, "no rooms imported"));
+        }
+        for (Raum room : rooms) {
+            if (Objects.equals(room.getRoom(), number)) {
+                return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(room);
+            }
+        }
+        return ResponseEntity.badRequest().contentType(MediaType.APPLICATION_JSON).body(new ErrorDto(400, "room number not found"));
     }
 
    /* public String fehlerCode(int httpCode, String message) {

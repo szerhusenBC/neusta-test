@@ -9,6 +9,9 @@ public class PersonParser {
 
     public Person parse(String userInfo){
         String[] splittetUserInfo = userInfo.split(" ");
+        if (splittetUserInfo.length == 0) {
+            return new Person("", "", "", "", "");
+        }
 
         if (splittetUserInfo.length <3) {
             throw new IllegalArgumentException("Person ist nicht vollständig");
@@ -22,8 +25,12 @@ public class PersonParser {
         String lastName = infoSplit.get(infoSplit.size() - 1);
         infoSplit.remove(infoSplit.size() - 1);
 
+        // [ggf. Titel] Vorname [ggf. Zweitname(n)] [ggf. Namenszusatz] Nachname (LDAP-Username)
         String titel;
         if (infoSplit.get(0).contains(".")) {
+            if (!infoSplit.get(0).equals("Dr.")) {
+                throw new IllegalArgumentException("Titel ist nicht korrekt");
+            }
             titel = "Dr.";
             infoSplit.remove(0);
         } else {
@@ -48,7 +55,6 @@ public class PersonParser {
     private String constructNameAddition(String s) {
         if (s.equals("von") || s.equals("de") || s.equals("van")) {
             return s;
-
         }
         return "";
     }}

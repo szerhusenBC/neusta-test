@@ -1,11 +1,9 @@
 package com.example.test3.service;
-
 import com.example.test3.domain.Person;
 import org.junit.jupiter.api.Test;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.*;
+
 
 class PersonParserTest {
 
@@ -45,17 +43,25 @@ class PersonParserTest {
     }
 
     @Test
+    void personOhneDaten() {
+        Person person = parser.parse("");
+
+        assertThat(person.getFirstName()).isEqualTo("");
+        assertThat(person.getLastName()).isEqualTo("");
+        assertThat(person.getLdapUser()).isEqualTo("");
+        assertThat(person.getNameAddition()).isEqualTo("");
+        assertThat(person.getTitle()).isEqualTo("");
+    }
+
+
+
+    @Test
     void personHatNurNachname() {
         assertThatThrownBy(() -> parser.parse("Supper"))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("Person ist nicht vollständig");
     }
-    @Test
-    void personHatNurVorname(){
-        assertThatThrownBy(()-> parser.parse( "Frank"))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("Person ist nicht vollständig");
-}
+
     @Test
     void personHatNurVornameUndNachname(){
         assertThatThrownBy(()-> parser.parse( "Frank Supper"))
@@ -63,9 +69,46 @@ class PersonParserTest {
                 .hasMessageContaining("Person ist nicht vollständig");
 
     }
+
+// [ggf. Titel] Vorname [ggf. Zweitname(n)] [ggf. Namenszusatz] Nachname (LDAP-Username)
+
+
+    /***
+     * 3: [ldap]
+     *      Dr. Vorname Nachname
+     *      Vorname von Nachname
+     *      //-------------------
+     *    [nachname]
+     *      Dr. Vorname (ldap)
+     *      Vorname von (ldap)
+     *      //-------------------
+     *    [vorname]
+     *      Dr. Nachname (ldap)
+     *      [vorname+nachname]
+     *      Dr. von (ldap)
+     *
+     *4: [ldap]
+     *  Dr. Vorname von Nachname
+     *  Dr. Vorname Zweitname Nachname
+     *  [vorname]
+     *  Dr. von Nachname (ldap)
+     * [nachname]
+     *  Dr. Vorname von (ldap)
+     *
+     *  5: [ldap]
+     *  Dr. Vorname Zweitname von Nachname
+     *  Dr. Vorname Zweitname Zweitname Nachname
+     *
+     * [titel]
+     * Prof. Max Müller (ldap)
+     * [ldap]
+     * Max von Müller <ldap>
+     *
+     *
+      */
     @Test
     void personHatZweiTitle(){
-        assertThatThrownBy(()-> parser.parse( "Prof.Dr."))
+        assertThatThrownBy(()-> parser.parse( "Dr. Vorname Nachname"))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("Person ist nicht vollständig");
     }
@@ -85,9 +128,9 @@ class PersonParserTest {
     }
     @Test
     void personHatFalscheTitleNachnameLdpUser(){
-        assertThatThrownBy(()-> parser.parse("F.Supper(fsupper)"))
+        assertThatThrownBy(()-> parser.parse("Prof. Max Müller (ldap)"))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("Person ist nicht vollständig");
+                .hasMessageContaining("Titel ist nicht korrekt");
 
     }
 

@@ -100,18 +100,13 @@ class PersonParserTest {
      *  Dr. Vorname Zweitname Zweitname Nachname
      *
      * [titel]
-     * Prof. Max Müller (ldap)
+     * Prof. Frank Supper(ldap)
      * [ldap]
-     * Max von Müller <ldap>
+     * Frank von Supper <ldap>
      *
      *
       */
-    @Test
-    void personHatZweiTitle(){
-        assertThatThrownBy(()-> parser.parse( "Dr. Vorname Nachname"))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("Person ist nicht vollständig");
-    }
+
     @Test
     void personHatFalscheTitle(){
         assertThatThrownBy(()-> parser.parse("Professor"))
@@ -120,21 +115,81 @@ class PersonParserTest {
         
     }
     @Test
-    void personHatKeinLdpUser(){
-        assertThatThrownBy(()-> parser.parse("Dr.Frank Supper" ))
+    void personHatKeinLdapUser(){
+        assertThatThrownBy(()-> parser.parse("Dr. Frank Supper" ))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("Person ist nicht vollständig");
 
     }
     @Test
-    void personHatFalscheTitleNachnameLdpUser(){
+    void personHatFalscheTitleNachnameLdapUser(){
         assertThatThrownBy(()-> parser.parse("Prof. Max Müller (ldap)"))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("Titel ist nicht korrekt");
 
     }
 
+    @Test
+    void personHatVornameNameAdditionUndFamilienNamen(){
+        assertThatThrownBy(()-> parser.parse(" Frank von Supper "))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("Person ist nicht vollständig");
 
+    }
+    @Test
+    void personHatTitleVornameLdapUser(){
+        assertThatThrownBy(()-> parser.parse(" Dr. Frank (fsupper)"))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("Person ist nicht vollständig");
+
+    }
+    @Test
+    void personHatTitleVornameNameAdditionNachname(){
+        assertThatThrownBy(()-> parser.parse(" Dr. Frank von Supper"))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("Person ist nicht vollständig");
+
+    }
+    @Test
+    void personHatTitleNameAdditionNachnameLdapUser(){
+        assertThatThrownBy(()-> parser.parse(" Dr. von Supper(fsupper)"))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("Person ist nicht vollständig");
+
+    }
+    @Test
+    void personHatTitleVornameZweitenameNameAdditionNachname(){
+        assertThatThrownBy(()-> parser.parse(" Dr.Frank Max von Supper"))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("Person ist nicht vollständig");
+
+    }
+    @Test
+    void personHatTitleVornameZweitenameZweitenameNachnameOhneTitle(){
+        assertThatThrownBy(()-> parser.parse(" Dr.Frank Max Dieter Supper"))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("Person ist nicht vollständig");
+
+    }
+    @Test
+    void personHatFalscheTitleVornameNameAdditonNachnameLdapUser(){
+        assertThatThrownBy(()-> parser.parse("Prof.Frank von  Supper (fsupper)"))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("Titel ist nicht korrekt");
+
+    }
+    @Test
+    void personHatTitleVornameNameAdditonNachnameLdpUserOhneLetzteKlammer() {
+        assertThatThrownBy(() -> parser.parse("Dr.Frank von  Supper (fsupper"))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("Person ist nicht vollständig");
+    }
+    @Test
+    void personHatTitleVornameNameAdditonNachnameLdpUserOhneStartKlammer() {
+        assertThatThrownBy(() -> parser.parse("Dr.Frank von  Supper fsupper)"))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("Person ist nicht vollständig");
+    }
     // "Frank Supper ()"
     // "Frank (fsupper)"
     // "Dr. Dr. Frank Supper (fsupper)"

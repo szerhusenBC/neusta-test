@@ -98,11 +98,7 @@ public class RaumService {
         return ResponseEntity.badRequest().contentType(MediaType.APPLICATION_JSON).body(new ErrorDto(400, "room number not found"));
     }
 
-   /* public String fehlerCode(int httpCode, String message) {
-        return "{\n" +
-                "   code:   " + httpCode + ",\n" +
-                "   message:" + message + "\n" +
-                "}";*/
+
 }
 
 

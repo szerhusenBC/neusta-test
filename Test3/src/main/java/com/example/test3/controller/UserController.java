@@ -42,19 +42,7 @@ public class UserController {
 
     @GetMapping("api/room/{number}")
     public ResponseEntity<Object> getRoom(@PathVariable String number) {
-       /* if (number.length() != 4) {
-            return ResponseEntity.badRequest().contentType(MediaType.APPLICATION_JSON).body(new ErrorDto(400, "invalid number format"));
-        }
-        List<Raum> rooms = raumService.getRooms();
-        if (rooms.isEmpty()) {
-            return ResponseEntity.badRequest().contentType(MediaType.APPLICATION_JSON).body(new ErrorDto(400, "no rooms imported"));
-        }
-        for (Raum room : rooms) {
-            if (Objects.equals(room.getRoom(), number)) {
-                return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(room);
-            }
-        }
-        return ResponseEntity.badRequest().contentType(MediaType.APPLICATION_JSON).body(new ErrorDto(400, "room number not found"));*/
+
         return raumService.getRoom(number);
     }
 

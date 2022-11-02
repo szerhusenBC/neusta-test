@@ -99,12 +99,6 @@ class PersonParserTest {
      *  Dr. Vorname Zweitname von Nachname
      *  Dr. Vorname Zweitname Zweitname Nachname
      *
-     * [titel]
-     * Prof. Frank Supper(ldap)
-     * [ldap]
-     * Frank von Supper <ldap>
-     *
-     *
       */
 
     @Test

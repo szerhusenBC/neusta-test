@@ -9,14 +9,13 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.List;
-import java.util.Objects;
 
 @RestController
 
 public class UserController {
 
 
-    private RaumService raumService;
+    private  final RaumService raumService;
 
     public UserController(RaumService raumService) {
         this.raumService = raumService;
@@ -37,11 +36,12 @@ public class UserController {
 
     @GetMapping("api/room")
     public List<Raum> getRooms() {
+
         return raumService.getRooms();
     }
 
     @GetMapping("api/room/{number}")
-    public ResponseEntity<Object> getRoom(@PathVariable String number) {
+    public ResponseEntity getRoom(@PathVariable String number) {
 
         return raumService.getRoom(number);
     }

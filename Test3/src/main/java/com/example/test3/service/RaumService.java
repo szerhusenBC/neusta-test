@@ -11,7 +11,7 @@ import java.util.*;
 public class RaumService {
 
     private List<Raum> raeume;
-    private Set<String> tempPersonData = new HashSet<>();
+    private final Set<String> tempPersonData = new HashSet<>();
 
     public ResponseEntity<Object> saveRaum(String content) {
         tempPersonData.clear();

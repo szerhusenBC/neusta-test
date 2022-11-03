@@ -13,6 +13,6 @@ public class FizzBuzzResult {
             return "Fizz";
 
         }
-        return "" + number;
+            return "" + number;
     }
 }

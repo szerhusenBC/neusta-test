@@ -27,7 +27,7 @@ public class UserController {
             // Fehlt im POST-Request das Daten-Feld
             return ResponseEntity.badRequest().contentType(MediaType.APPLICATION_JSON).body(new ErrorDto(400, "no csv file given"));
         }
-        // TODO: prüfe ob Daten-Feld valide
+
         String content = new String(document.getBytes());
         return raumService.saveRaum(content);
     }

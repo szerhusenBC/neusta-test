@@ -2,18 +2,17 @@ package com.example.romantodecimal;
 
 
 import org.junit.jupiter.api.Test;
-
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 
-class RomaToIntTest {
-    public RomaToInt converter = new RomaToInt();
+class RomanToIntTest {
+    public RomanToInt converter = new RomanToInt();
 
     @Test
     void converterRomanToIntCD() {
         String value = "CD";
         int result = 400;
-        RomaToInt.converter("CD");
+        RomanToInt.converter("CD");
         assertThat(result).isEqualTo(400);
 
     }
@@ -22,7 +21,7 @@ class RomaToIntTest {
     void converterRomanToIntV() {
         String value = "V";
         int result = 5;
-        RomaToInt.converter("V");
+        RomanToInt.converter("V");
         assertThat(result).isEqualTo(5);
 
     }
@@ -31,7 +30,7 @@ class RomaToIntTest {
     void converterRomanToIntM() {
         String value = "M";
         int result = 1000;
-        RomaToInt.converter("M");
+        RomanToInt.converter("M");
         assertThat(result).isEqualTo(1000);
 
     }
@@ -40,7 +39,7 @@ class RomaToIntTest {
     void converterRomanToIntI() {
         String value = "I";
         int result = 1;
-        RomaToInt.converter("I");
+        RomanToInt.converter("I");
         assertThat(result).isEqualTo(1);
 
     }
@@ -49,7 +48,7 @@ class RomaToIntTest {
     void converterRomanToIntIIII() {
         String value = "IV";
         int result = 4;
-        RomaToInt.converter("IV");
+        RomanToInt.converter("IV");
         assertThat(result).isEqualTo(4);
 
     }

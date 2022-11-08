@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class FizzBuzzApplication {
 
     public static void main(String[] args) {
+
         FizzBuzzResult fizzBuzzResult = new FizzBuzzResult();
 
         for (int i = 1; i <= 100; i++) {
